@@ -44,7 +44,7 @@ def on_trackbar(val):
 	# draw contours
 	new_frame = frame.copy()
 	cv.drawContours(new_frame, new_contours, -1, (0,255,0), 1)
-	new_frame = cv.resize(new_frame, dsize=(1280,720))
+	#new_frame = cv.resize(new_frame, dsize=(1280,720))
 	cv.imshow(window_title, new_frame)
 	#plt.show()
 

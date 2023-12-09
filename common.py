@@ -22,3 +22,11 @@ def get_test_img():
 		print("Can't receive frame (stream end?). Exiting ...")
 		exit()
 	return frame
+
+
+def select_roi(img, window_name = 'selection'):
+	roi_rect = cv.selectROI(window_name, img)
+	#print(roi_rect)
+	roi = img[roi_rect[1]:roi_rect[1]+roi_rect[3], roi_rect[0]:roi_rect[0]+roi_rect[2]]
+	#cv.imshow("roi", roi)
+	return roi

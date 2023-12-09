@@ -1,25 +1,34 @@
 import cv2 as cv
 import numpy as np
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
 
 from common import *
 
 
 frame = get_test_img()
 
-#window_name = 'test'
-#cv.namedWindow(window_name)
+frame = cv.imread('./frames/4612.png')
 
-gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+roi = select_roi(frame)
 
-while True:
-	roi_rect = cv.selectROI("selection", gray)
+fig = plt.figure()
+ax = fig.add_subplot(projection = '3d')
 
-	print(roi_rect)
+print(roi[0, 0])
+points = roi.ravel()
 
-	roi = gray[roi_rect[1]:roi_rect[1]+roi_rect[3], roi_rect[0]:roi_rect[0]+roi_rect[2]]
+hues = roi[:, :, 0].ravel()
+sats = roi[:, :, 1].ravel()
+vals = roi[:, :, 2].ravel()
 
-	cv.imshow("roi", roi)
+print(f'Plotting {len(points)} points.')
+print(f'There are {len(np.unique(hues))} unique Hue values')
+print(f'There are {len(np.unique(sats))} unique Sat values')
+print(f'There are {len(np.unique(vals))} unique Val values')
 
-	plt.hist(roi.ravel(),256,[0,256])
-	plt.show()
+ax.scatter(hues, sats, vals)
+ax.set_xlabel('Hue')
+ax.set_ylabel('Sat')
+ax.set_zlabel('Val')
+
+plt.show()

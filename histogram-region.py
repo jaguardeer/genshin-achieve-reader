@@ -7,9 +7,9 @@ from common import *
 
 frame = get_test_img()
 
-frame = cv.imread('./frames/4612.png')
-
+frame = cv.imread('./frames/4108.png')
 roi = select_roi(frame)
+frame = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
 
 fig = plt.figure()
 ax = fig.add_subplot(projection = '3d')

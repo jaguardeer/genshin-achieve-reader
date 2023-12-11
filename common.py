@@ -23,10 +23,27 @@ def get_test_img():
 		exit()
 	return frame
 
-
 def select_roi(img, window_name = 'selection'):
 	roi_rect = cv.selectROI(window_name, img)
 	#print(roi_rect)
 	roi = img[roi_rect[1]:roi_rect[1]+roi_rect[3], roi_rect[0]:roi_rect[0]+roi_rect[2]]
 	#cv.imshow("roi", roi)
 	return roi
+
+def preview(img, win_name = 'preview'):
+	#cv.startWindowThread() # just needs to be called once per session
+	cv.imshow(win_name, img)
+	cv.waitKey(0)
+	cv.destroyWindow(win_name)
+
+class img:
+	def __init__(self, filename):
+		self.data = cv.imread(filename)
+
+	def __repr__(self):
+		print(self.data.shape)
+		preview(self.data)
+		return ''#f'{self.data.shape}'
+
+	def __array__(self):
+		return self.data

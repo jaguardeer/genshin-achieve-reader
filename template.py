@@ -1,11 +1,12 @@
 from common import *
 import cv2 as cv
 import numpy as np
+from glob import glob
 
 
 img = cv.imread('./artifact-page.png')
-template = cv.imread('./template.png')
-h, w, _ = template.shape
+
+templates = [cv.imread(f) for f in glob('./templates/*.png')]
 
 threshold_max = 1000
 
@@ -14,17 +15,13 @@ def on_trackbar(val):
 
 	threshold = val / threshold_max
 
+	for template in templates:
+		matches = cv.matchTemplate(img, template, cv.TM_CCOEFF_NORMED)
+		locs = np.where(matches > threshold)
+		h, w, _ = template.shape
 
-	matches = cv.matchTemplate(img, template, cv.TM_CCOEFF_NORMED)
-	locs = np.where(matches > threshold)
-
-	max_rects = 300
-	i = 0
-	for pt in zip(*locs[::-1]):
-		i = i + 1
-		#if i > max_rects:
-		#	break
-		cv.rectangle(img_copy, pt, (pt[0] + w, pt[1] + h), (0,0,255), 1)
+		for pt in zip(*locs[::-1]):
+			cv.rectangle(img_copy, pt, (pt[0] + w, pt[1] + h), (0,0,255), 1)
 
 	cv.imshow(win, img_copy)
 
